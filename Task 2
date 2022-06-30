@@ -1,0 +1,29 @@
+import pandas as pd
+cm=pd.read_csv('gl_cm.csv')
+enroll=pd.read_csv('gl_enroll.csv')
+print(cm)
+print(enroll)
+print(cm["Subject"].unique())
+print(enroll["Subject"].unique())
+cm.info()
+unique=cm.Subject.unique()
+unique
+for i in range(len(unique)):
+    df1=cm.loc[cm['Subject']==unique[i]]
+    df2=enroll.loc[enroll['Subject']==unique[i]]
+ae=pd.read_csv('gl_ae.csv')
+print(ae)
+ae_df=pd.DataFrame(ae)
+print(ae_df)
+for ind in range(ae_df.shape[0]):
+        ae_record = ae_df.iloc[[ind]]
+        aeterm = ae_record['AETERM'].values[0]
+        for i in ae['AECONTRT']:
+             if i=='Yes':
+                df1['CMSTDAT'] = pd.to_datetime(df1['CMSTDAT'], format='%y%m%d')
+                df2['DSSTDAT'] = pd.to_datetime(df2['DSSTDAT'], format='%y%m%d')
+                if df1['CMSTDAT'] < df2['DSSTDAT']:
+                    if ae_df['AESTDAT'] < df1['CMSTDAT'] <ae_df['AEENDAT']:
+                        result_datframe=df2.merge(df1, on='Subject')
+                        A=pd.DataFrame(result_dataframe)
+                        A.to_csv('C:\Users\deepa.natarajan\Downloads\taskk2.csv')
